@@ -1,0 +1,111 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Markdown personal settings
+/markdown.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Ignored default folder with query files
+/queries/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+
+# Prerequisites
+*.d
+# Default ignored files
+/shelf/
+/workspace.xml
+# Ignored default folder with query files
+/queries/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+*out/
+# Precompiled Headers
+*.gch
+*.pch
+*.zip
+# Linker files
+*.ilk
+
+# Debugger Files
+*.pdb
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# debug information files
+*.dwo
+
+# LaTeX intermediate files
+*.aux
+*.bbl
+*.blg
+*.brf
+*.log
+*.nav
+*.snm
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex.gz(busy)
+*.xdv
+
+# Temporary files
+**/*~
+**/*.bak
+**/*.tmp
+
+# Output files
+**/*.pdf
+**/*.dvi
+**/*.ps
+*.idea/
+# Editor-specific files
+**/*.swp
+**/*.swo
+**/*.DS_Store
+lab2/dataRegister.txt
+lab2/lab2
+*.demo/
+# --- IntelliJ-filer (Inställningar som inte ska delas) ---
+.idea/
+*.iml
+*.iws
+out/
+
+# --- Java-filer (Kompilerad kod) ---
+*.class
+
+# --- Systemfiler (Skräpfiler från operativsystemet) ---
+.DS_Store
+Thumbs.db
+*.vscode/
+DVGB19_Labs/lab2-virtual-memory-simulator/CLAUDE.md
