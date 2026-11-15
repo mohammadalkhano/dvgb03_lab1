@@ -10,6 +10,14 @@
 void bubble_sort(int *a, int n)
 {
 	// TODO: bubble sort
+
+	int i, j, tmp;
+	bool swapped;
+
+	for (i = 0; i < n - 1; i++) {
+
+		
+	}
 }
 
 void insertion_sort(int *a, int n)
