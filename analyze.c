@@ -1,5 +1,6 @@
 #include "analyze.h"
 #include "algorithm.h"
+#include <time.h>
 
 //
 // Private
