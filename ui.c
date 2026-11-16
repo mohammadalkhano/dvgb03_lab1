@@ -4,6 +4,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
+#include <time.h>
 
 
 //delete this
@@ -88,6 +89,7 @@ void ui_run()
 {
 	bool running, show_menu;
 	result_t result[RESULT_ROWS];
+	clock_t start_time, end_time;
 	
 
 	show_menu = true;
@@ -106,27 +108,73 @@ void ui_run()
 			case 'b':
 				running = false;
 				break;
-			// Bubble sort
+			//  Bubble BEST case
 			case 'c':
 				benchmark(bubble_sort_t, best_t, result, RESULT_ROWS);
 				
 				//test bubble sort to delete later
-				printf("innan sortering... \n");
-				ui_print_result(mockdata);
-				bubble_sort(mockdata, MOCKDATA_SIZE);
-				ui_print_result(mockdata);
+				//printf("innan sortering... \n");
+				 start_time = clock();
+				ui_print_result(mockdata_best);
+				bubble_sort(mockdata_best, MOCKDATA_SIZE);
+				ui_print_result(mockdata_best);
+				end_time = clock();
+				printf("Bubble sort best case time: %f seconds\n", ((double)(end_time - start_time)) / CLOCKS_PER_SEC);
 				printf("todo> implemenet BE + present results in FE\n");
 				break;
-			// Insertion sort
+			// BUBBLE WORST CASE
 			case 'd':
-			// Quick sort
+				benchmark(bubble_sort_t, worst_t, result, RESULT_ROWS);
+				start_time = clock();
+
+				//test bubble sort to delete later
+				//printf("innan sortering... \n");
+				ui_print_result(mockdata_worst);
+				bubble_sort(mockdata_worst, MOCKDATA_SIZE);
+				ui_print_result(mockdata_worst);
+				end_time = clock();
+				printf("Bubble sort worst case time: %f seconds\n", ((double)(end_time - start_time)) / CLOCKS_PER_SEC);
+				printf("todo> implemenet BE + present results in FE\n");
+				break;
+
+			// Bubble average case
 			case 'e':
+				benchmark(bubble_sort_t, average_t, result, RESULT_ROWS);
+				start_time = clock();
+				//test bubble sort to delete later
+				//printf("innan sortering... \n");
+				ui_print_result(mockdata_average);
+				bubble_sort(mockdata_average, MOCKDATA_SIZE);
+				ui_print_result(mockdata_average);
+				end_time = clock();
+				printf("Bubble sort average case time: %f seconds\n", ((double)(end_time - start_time)) / CLOCKS_PER_SEC);
+				printf("todo> implemenet BE + present results in FE\n");
+				break;
+
+
+
+
+
+
+				//Insertion sort best case
+				case 'f':
+				benchmark(insertion_sort_t, best_t, result, RESULT_ROWS);
+				//test insertion sort to delete later
+				printf("innan sortering... \n");
+				ui_print_result(mockdata_best);
+				insertion_sort(mockdata_best, MOCKDATA_SIZE);
+				ui_print_result(mockdata_best);
+				printf("todo> implemenet BE + present results in FE\n");
+				break;
+
+				//quick sort best case
+				case 'i':
 				benchmark(quick_sort_t, best_t, result, RESULT_ROWS);
 				//test quick sort to delete later
 				printf("innan sortering... \n");
-				ui_print_result(mockdata);
-				quick_sort(mockdata, MOCKDATA_SIZE);
-				ui_print_result(mockdata);
+				ui_print_result(mockdata_best);
+				quick_sort(mockdata_best, MOCKDATA_SIZE);
+				ui_print_result(mockdata_best);
 				printf("todo> implemenet BE + present results in FE\n");
 				break;
 			// Invalid input
