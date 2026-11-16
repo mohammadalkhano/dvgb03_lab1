@@ -95,6 +95,7 @@ void ui_run()
 			case 'a':
 				show_menu = true;
 				break;
+			// Exit
 			case 'b':
 				running = false;
 				break;
