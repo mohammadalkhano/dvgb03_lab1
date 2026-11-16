@@ -5,6 +5,12 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+
+//delete this
+#include "algorithm.h"
+#include "mockdata.h"
+
+
 //
 // Private
 //
@@ -83,6 +89,7 @@ void ui_run()
 	bool running, show_menu;
 	result_t result[RESULT_ROWS];
 	
+
 	show_menu = true;
 	running = true;
 	while (running) {
@@ -102,6 +109,24 @@ void ui_run()
 			// Bubble sort
 			case 'c':
 				benchmark(bubble_sort_t, best_t, result, RESULT_ROWS);
+				
+				//test bubble sort to delete later
+				printf("innan sortering... \n");
+				ui_print_result(mockdata);
+				bubble_sort(mockdata, MOCKDATA_SIZE);
+				ui_print_result(mockdata);
+				printf("todo> implemenet BE + present results in FE\n");
+				break;
+			// Insertion sort
+			case 'd':
+			// Quick sort
+			case 'e':
+				benchmark(quick_sort_t, best_t, result, RESULT_ROWS);
+				//test quick sort to delete later
+				printf("innan sortering... \n");
+				ui_print_result(mockdata);
+				quick_sort(mockdata, MOCKDATA_SIZE);
+				ui_print_result(mockdata);
 				printf("todo> implemenet BE + present results in FE\n");
 				break;
 			// Invalid input
@@ -112,4 +137,11 @@ void ui_run()
 		}
 	}
 	ui_exit();
+}
+void ui_print_result(int *a)
+{
+	for (int i = 0; i < 10; i++) {
+		printf("%d  ,", a[i]);
+	}
+	printf("\n");
 }
