@@ -108,4 +108,5 @@ out/
 .DS_Store
 Thumbs.db
 *.vscode/
-DVGB19_Labs/lab2-virtual-memory-simulator/CLAUDE.md
+*/CLAUDE.md
+main
