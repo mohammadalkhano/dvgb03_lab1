@@ -79,7 +79,7 @@ static void ui_menu()
 
 // Skriver ut tiden och tiden delad med varje kandidatfunktion f(n).
 // Rätt big-O är den kolumn som konvergerar mot en konstant.
-static void ui_print_results(const result_t *result, int n)
+static void print_result(const result_t *result, int n)
 {
     ui_line('=', MENU_WIDTH);
     printf("\tsize \ttime T(s) \tT/log n \tT/n \tT/n log n \tT/n^2");
@@ -103,7 +103,7 @@ static void ui_print_results(const result_t *result, int n)
 static void ui_benchmark(algorithm_t a, case_t c, result_t *result)
 {
     benchmark(a, c, result, RESULT_ROWS);
-    ui_print_results(result, RESULT_ROWS);
+    print_result(result, RESULT_ROWS);
 }
 //
 // Public
@@ -169,12 +169,4 @@ void ui_run()
         }
     }
     ui_exit();
-}
-void ui_print_result(int *a)
-{
-    for (int i = 0; i < 10; i++)
-    {
-        printf("%d  ,", a[i]);
-    }
-    printf("\n");
 }
