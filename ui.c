@@ -88,10 +88,10 @@ static void print_result(const result_t *result, int n)
 
         if (t == MEASURE_FAILED)
         {
-            printf("%8d %12s\n", result[i].size, "failed");
+            printf("%d %s\n", result[i].size, "failed");
             continue;
         }
-        printf("%8d %12.9f %12.3e %12.3e %12.3e %12.3e\n", result[i].size, t, t / log2(size),
+        printf("%d %12.9f %12.3e %12.3e %12.3e %12.3e\n", result[i].size, t, t / log2(size),
                t / size, t / (size * log2(size)), t / (size * size));
     }
     ui_line('=', MENU_WIDTH);

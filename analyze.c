@@ -58,7 +58,7 @@ static double time_sort(sort_algorithm sort, case_t c, int *arr, int n)
     for (int i = 0; i < ITERATIONS; i++)
     {
         generate_casebased_data(arr, n, c); // ny indata varje gång, eftersom sorteringen ändrar arr
-        double start = now();
+        double start = now();  // Starta mätningen (arrival)
         sort(arr, n);
         total += now() - start;
     }
@@ -68,7 +68,7 @@ static double time_sort(sort_algorithm sort, case_t c, int *arr, int n)
 //
 // Public
 //
-void benchmark(const algorithm_t a, const case_t c, result_t *buf, int n)
+void benchmark(algorithm_t a, case_t c, result_t *result, int n)
 {
     //
     sort_algorithm sort = choose_algorithm(a);
@@ -79,14 +79,14 @@ void benchmark(const algorithm_t a, const case_t c, result_t *buf, int n)
         int size = SIZE_START << i; // storleken dubblas för varje rad
         int *arr = malloc(size * sizeof(*arr));
 
-        buf[i].size = size;
+        result[i].size = size;
         if (arr != NULL && sort != NULL)
         {
-            buf[i].time = time_sort(sort, c, arr, size);
+            result[i].time = time_sort(sort, c, arr, size);
         }
         else
         {
-            buf[i].time = MEASURE_FAILED;
+            result[i].time = MEASURE_FAILED;
         }
         free(arr);
     }
