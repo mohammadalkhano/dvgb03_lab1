@@ -30,16 +30,19 @@ void insertion_sort(int *a, int n)
     // TODO: insertion sort
     for (int i = 1; i < n; i++)
     {
-        int temp = a[i];
+        int key = a[i];
         int j = i - 1;
 
-        while (j >= 0 && a[j] > temp)
+        while (j >= 0 && a[j] > key) // I bästa fall hoppa över while (det är redan sorterad (a[j] !> key)).
         {
             a[j + 1] = a[j];
             j--;
         }
-        a[j + 1] = temp;
+        a[j + 1] = key; // Välj en ny key
     }
+    /*
+
+    */
 }
 
 void quick_sort(int *a, int n)
