@@ -5,11 +5,8 @@
 #include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <time.h>
 
-// delete this
-#include "algorithm.h"
-#include "mockdata.h"
+
 
 //
 // Private
@@ -143,23 +140,23 @@ void ui_run()
             break;
             // insertion sort
         case 'f':
-            ui_benchmark(bubble_sort_t, best_t, result);
+            ui_benchmark(insertion_sort_t, best_t, result);
             break;
         case 'g':
-            ui_benchmark(bubble_sort_t, worst_t, result);
+            ui_benchmark(insertion_sort_t, worst_t, result);
             break;
         case 'h':
-            ui_benchmark(bubble_sort_t, average_t, result);
+            ui_benchmark(insertion_sort_t, average_t, result);
             break;
         // insertion sort
         case 'i':
-            ui_benchmark(bubble_sort_t, best_t, result);
+            ui_benchmark(quick_sort_t, best_t, result);
             break;
         case 'j':
-            ui_benchmark(bubble_sort_t, worst_t, result);
+            ui_benchmark(quick_sort_t, worst_t, result);
             break;
         case 'k':
-            ui_benchmark(bubble_sort_t, average_t, result);
+            ui_benchmark(quick_sort_t, average_t, result);
             break;
         // Invalid input
         default:
