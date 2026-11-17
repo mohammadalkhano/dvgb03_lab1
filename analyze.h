@@ -3,27 +3,31 @@
 
 #define SIZE_START 512
 #define ITERATIONS 4
+#define MEASURE_FAILED (-1.0) // om mätningen inte kunde
 
 // algorithm_t defines different algorithms
-typedef enum {
-	bubble_sort_t,
-	insertion_sort_t,
-	quick_sort_t,
-	linear_search_t,
-	binary_search_t
+typedef enum
+{
+    bubble_sort_t,
+    insertion_sort_t,
+    quick_sort_t,
+    linear_search_t,
+    binary_search_t
 } algorithm_t;
 
 // case_t defines different cases
-typedef enum {
-	best_t,
-	worst_t,
-	average_t,
+typedef enum
+{
+    best_t,
+    worst_t,
+    average_t,
 } case_t;
 
 // result_t defines a timed measurement for a given array size
-typedef struct {
-	int size;
-	double time;
+typedef struct
+{
+    int size;
+    double time;
 } result_t;
 
 // benchmark benchmarks an algorithm a for a specific case c, writing n results

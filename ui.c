@@ -1,195 +1,172 @@
 #include "ui.h"
-#include "io.h"
 #include "analyze.h"
+#include "io.h"
 
+#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <time.h>
 
-
-//delete this
+// delete this
 #include "algorithm.h"
 #include "mockdata.h"
-
 
 //
 // Private
 //
-static void ui_invalid_input()
-{
-	printf("info> bad input\n");
-}
+static void ui_invalid_input() { printf("info> bad input\n"); }
 
-static void ui_exit()
-{
-	printf("info> bye\n");
-}
+static void ui_exit() { printf("info> bye\n"); }
 
 static char ui_get_choice()
 {
-	char buf[3];
+    char buf[3];
 
-	printf("input> ");
-	return read_line(buf, 3) ? buf[0] : 0;
+    printf("input> ");
+    return read_line(buf, 3) ? buf[0] : 0;
 }
 
 static void ui_line(char c, int n)
 {
-	while (n-- > 0) {
-		putchar(c);
-	}
-	putchar('\n');
+    while (n-- > 0)
+    {
+        putchar(c);
+    }
+    putchar('\n');
 }
 
 static void ui_menu_options(const char *options[], int num_options)
 {
-	int i;
+    int i;
 
-	for (i=0; i<num_options; i++) {
-		printf("    %c) %s\n", 'a'+i, options[i]);
-	}
+    for (i = 0; i < num_options; i++)
+    {
+        printf("    %c) %s\n", 'a' + i, options[i]);
+    }
 }
 
 static void ui_menu()
 {
-	const char *options[] = {
-		"Menu",
-		"Exit\n",
-		
-		"Bubble sort best case",
-		"Bubble sort worst case",
-		"Bubble sort average case",
-		
-		"Insertion sort best case",
-		"Insertion sort worst case",
-		"Insertion sort average case",
+    const char *options[] = {
+        "Menu",
+        "Exit\n",
 
-		"Quick sort best case",
-		"Quick sort worst case",
-		"Quick sort average case",
+        "Bubble sort best case",
+        "Bubble sort worst case",
+        "Bubble sort average case",
 
-		"Linear sort best case",
-		"Linear sort worst case",
-		"Linear sort average case",
+        "Insertion sort best case",
+        "Insertion sort worst case",
+        "Insertion sort average case",
 
-		"Binary sort best case",
-		"Binary sort worst case",
-		"Binary sort average case",
-	};
+        "Quick sort best case",
+        "Quick sort worst case",
+        "Quick sort average case",
 
-	ui_line('=', MENU_WIDTH);
-	ui_menu_options(options, sizeof(options) / sizeof(char *));
-	ui_line('-', MENU_WIDTH);
+        "Linear sort best case",
+        "Linear sort worst case",
+        "Linear sort average case",
+
+        "Binary sort best case",
+        "Binary sort worst case",
+        "Binary sort average case",
+    };
+
+    ui_line('=', MENU_WIDTH);
+    ui_menu_options(options, sizeof(options) / sizeof(char *));
+    ui_line('-', MENU_WIDTH);
 }
 
+// Skriver ut tiden och tiden delad med varje kandidatfunktion f(n).
+// Rätt big-O är den kolumn som konvergerar mot en konstant.
+static void print_result(const result_t *result, int n)
+{
+    ui_line('=', MENU_WIDTH);
+    printf("\tsize \ttime T(s) \tT/log n \tT/n \tT/n log n \tT/n^2");
+    ui_line('-', MENU_WIDTH);
+    for (int i = 0; i < n; i++)
+    {
+        double size = result[i].size;
+        double t = result[i].time;
+
+        if (t == MEASURE_FAILED)
+        {
+            printf("%8d %12s\n", result[i].size, "failed");
+            continue;
+        }
+        printf("%8d %12.9f %12.3e %12.3e %12.3e %12.3e\n", result[i].size, t, t / log2(size),
+               t / size, t / (size * log2(size)), t / (size * size));
+    }
+    ui_line('=', MENU_WIDTH);
+}
+
+static void ui_benchmark(algorithm_t a, case_t c, result_t *result)
+{
+    benchmark(a, c, result, RESULT_ROWS);
+    print_result(result, RESULT_ROWS);
+}
 //
 // Public
 //
 void ui_run()
 {
-	bool running, show_menu;
-	result_t result[RESULT_ROWS];
-	clock_t start_time, end_time;
-	
+    bool running, show_menu;
+    result_t result[RESULT_ROWS];
 
-	show_menu = true;
-	running = true;
-	while (running) {
-		if (show_menu) {
-			show_menu = false;
-			ui_menu();
-		}
-		switch (ui_get_choice()) {
-			// House keeping
-			case 'a':
-				show_menu = true;
-				break;
-			// Exit
-			case 'b':
-				running = false;
-				break;
-			//  Bubble BEST case
-			case 'c':
-				benchmark(bubble_sort_t, best_t, result, RESULT_ROWS);
-				
-				//test bubble sort to delete later
-				//printf("innan sortering... \n");
-				 start_time = clock();
-				ui_print_result(mockdata_best);
-				bubble_sort(mockdata_best, MOCKDATA_SIZE);
-				ui_print_result(mockdata_best);
-				end_time = clock();
-				printf("Bubble sort best case time: %f seconds\n", ((double)(end_time - start_time)) / CLOCKS_PER_SEC);
-				printf("todo> implemenet BE + present results in FE\n");
-				break;
-			// BUBBLE WORST CASE
-			case 'd':
-				benchmark(bubble_sort_t, worst_t, result, RESULT_ROWS);
-				start_time = clock();
-
-				//test bubble sort to delete later
-				//printf("innan sortering... \n");
-				ui_print_result(mockdata_worst);
-				bubble_sort(mockdata_worst, MOCKDATA_SIZE);
-				ui_print_result(mockdata_worst);
-				end_time = clock();
-				printf("Bubble sort worst case time: %f seconds\n", ((double)(end_time - start_time)) / CLOCKS_PER_SEC);
-				printf("todo> implemenet BE + present results in FE\n");
-				break;
-
-			// Bubble average case
-			case 'e':
-				benchmark(bubble_sort_t, average_t, result, RESULT_ROWS);
-				start_time = clock();
-				//test bubble sort to delete later
-				//printf("innan sortering... \n");
-				ui_print_result(mockdata_average);
-				bubble_sort(mockdata_average, MOCKDATA_SIZE);
-				ui_print_result(mockdata_average);
-				end_time = clock();
-				printf("Bubble sort average case time: %f seconds\n", ((double)(end_time - start_time)) / CLOCKS_PER_SEC);
-				printf("todo> implemenet BE + present results in FE\n");
-				break;
-
-
-
-
-
-
-				//Insertion sort best case
-				case 'f':
-				benchmark(insertion_sort_t, best_t, result, RESULT_ROWS);
-				//test insertion sort to delete later
-				printf("innan sortering... \n");
-				ui_print_result(mockdata_best);
-				insertion_sort(mockdata_best, MOCKDATA_SIZE);
-				ui_print_result(mockdata_best);
-				printf("todo> implemenet BE + present results in FE\n");
-				break;
-
-				//quick sort best case
-				case 'i':
-				benchmark(quick_sort_t, best_t, result, RESULT_ROWS);
-				//test quick sort to delete later
-				printf("innan sortering... \n");
-				ui_print_result(mockdata_best);
-				quick_sort(mockdata_best, MOCKDATA_SIZE);
-				ui_print_result(mockdata_best);
-				printf("todo> implemenet BE + present results in FE\n");
-				break;
-			// Invalid input
-			default:
-				show_menu = false;
-				ui_invalid_input();
-				break;
-		}
-	}
-	ui_exit();
-}
-void ui_print_result(int *a)
-{
-	for (int i = 0; i < 10; i++) {
-		printf("%d  ,", a[i]);
-	}
-	printf("\n");
+    show_menu = true;
+    running = true;
+    while (running)
+    {
+        if (show_menu)
+        {
+            show_menu = false;
+            ui_menu();
+        }
+        switch (ui_get_choice())
+        {
+        // House keeping
+        case 'a':
+            show_menu = true;
+            break;
+        case 'b':
+            running = false;
+            break;
+        // Bubble sort
+        case 'c':
+            ui_benchmark(bubble_sort_t, best_t, result);
+            break;
+        case 'd':
+            ui_benchmark(bubble_sort_t, worst_t, result);
+            break;
+        case 'e':
+            ui_benchmark(bubble_sort_t, average_t, result);
+            break;
+            // insertion sort
+        case 'f':
+            ui_benchmark(bubble_sort_t, best_t, result);
+            break;
+        case 'g':
+            ui_benchmark(bubble_sort_t, worst_t, result);
+            break;
+        case 'h':
+            ui_benchmark(bubble_sort_t, average_t, result);
+            break;
+        // insertion sort
+        case 'i':
+            ui_benchmark(bubble_sort_t, best_t, result);
+            break;
+        case 'j':
+            ui_benchmark(bubble_sort_t, worst_t, result);
+            break;
+        case 'k':
+            ui_benchmark(bubble_sort_t, average_t, result);
+            break;
+        // Invalid input
+        default:
+            show_menu = false;
+            ui_invalid_input();
+            break;
+        }
+    }
+    ui_exit();
 }
