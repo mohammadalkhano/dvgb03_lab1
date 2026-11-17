@@ -45,30 +45,9 @@ void insertion_sort(int *a, int n)
 void quick_sort(int *a, int n)
 {
     // TODO: quick sort
-    int i, j, pivot, tmp;
-    if (n <= 1)
-        return;
-    pivot = a[n - 1];
-    i = 0;
 
-    for (j = 0; j < n - 1; j++)
-    {
-        if (a[j] < pivot)
-        {
-            i++;
-
-            tmp = a[i];
-            a[i] = a[j];
-            a[j] = tmp;
-        }
-
-        tmp = a[i];
-        a[i] = a[n - 1];
-        a[n - 1] = tmp;
-
-        quick_sort(a, i);
-        quick_sort(a + i + 1, n - i - 1);
-    }
+    int i, j, x,y,z ,pivot, temp;
+    
 }
 
 bool linear_search(const int *a, int n, int v)
