@@ -5,7 +5,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-
 //
 // Private
 //
@@ -89,7 +88,7 @@ void print_result(const result_t *result, int n)
             printf("%d %s\n", result[i].size, "failed");
             continue;
         }
-        printf("%d \t %lf %12.3e %12.3e %12.3e %12.3e\n", result[i].size, t, t / log2(size),
+        printf("%d \t %.9f %12.3e %12.3e %12.3e %12.3e\n", result[i].size, t, t / log2(size),
                t / size, t / (size * log2(size)), t / (size * size));
     }
     ui_line('=', MENU_WIDTH);

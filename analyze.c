@@ -55,6 +55,24 @@ static void generate_casebased_data(int *arr, int n, case_t c)
         }
     }
 }
+static int generate_target(int n, case_t c)
+{
+    switch (c)
+    {
+    case best_t:
+        return 0;
+        break;
+    case worst_t:
+        return n - 1;
+        break;
+    case average_t:
+        return (int)((n / 2) + 1);
+        break;
+    default:
+        return -2;
+        break;
+    }
+}
 
 static double timer_now()
 {
@@ -89,9 +107,9 @@ static double time_search(search_algorithm search, case_t c, int *arr, int n)
     {
         generate_casebased_data(arr, n, c);
         int target = generate_target(n, c);
-        double start = now();  // Starta mätningen (arrival)
+        double start = timer_now(); // Starta mätningen (arrival)
         search(arr, n, target);
-        total += now() - start;
+        total += timer_now() - start;
     }
     return total / ITERATIONS;
 }
@@ -114,7 +132,7 @@ void benchmark(algorithm_t a, case_t c, result_t *result, int n)
         {
             result[i].time = time_sort(sort_algorithm, c, arr, size);
         }
-       //new
+        // new
         else if (arr != NULL && search_algorithm != NULL)
         {
             result[i].time = time_search(search_algorithm, c, arr, size);
@@ -127,9 +145,3 @@ void benchmark(algorithm_t a, case_t c, result_t *result, int n)
         free(arr);
     }
 }
-
-
-
-
-
-
