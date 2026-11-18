@@ -79,10 +79,10 @@ static void ui_menu()
 
 // Skriver ut tiden och tiden delad med varje kandidatfunktion f(n).
 // Rätt big-O är den kolumn som konvergerar mot en konstant.
-static void print_result(const result_t *result, int n)
+void print_result(const result_t *result, int n)
 {
     ui_line('=', MENU_WIDTH);
-    printf("\tsize \ttime T(s) \tT/log n \tT/n \tT/n log n \tT/n^2");
+    printf("size \ttime T(s)\tT/log n\tT/n\tT/n log n \tT/n^2\n");
     ui_line('-', MENU_WIDTH);
     for (int i = 0; i < n; i++)
     {
@@ -94,7 +94,7 @@ static void print_result(const result_t *result, int n)
             printf("%d %s\n", result[i].size, "failed");
             continue;
         }
-        printf("%d %12.9f %12.3e %12.3e %12.3e %12.3e\n", result[i].size, t, t / log2(size),
+        printf("%d \t %lf %12.3e %12.3e %12.3e %12.3e\n", result[i].size, t, t / log2(size),
                t / size, t / (size * log2(size)), t / (size * size));
     }
     ui_line('=', MENU_WIDTH);

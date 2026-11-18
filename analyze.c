@@ -2,6 +2,7 @@
 #include "algorithm.h"
 #include <stdlib.h>
 #include <time.h>
+
 //
 // Private
 //
@@ -42,12 +43,12 @@ static void generate_casebased_data(int *arr, int n, case_t c)
     }
 }
 
-static double now()
+static double timer_now()
 {
     struct timespec time_space;
 
     clock_gettime(CLOCK_MONOTONIC, &time_space);
-    return time_space.tv_sec + time_space.tv_nsec / 1E9;
+    return (double)(time_space.tv_sec + time_space.tv_nsec / MILJARD);
 }
 
 // Returnerar medeltiden i sekunder över ITERATIONS sorteringar.
@@ -58,9 +59,11 @@ static double time_sort(sort_algorithm sort, case_t c, int *arr, int n)
     for (int i = 0; i < ITERATIONS; i++)
     {
         generate_casebased_data(arr, n, c); // ny indata varje gång, eftersom sorteringen ändrar arr
-        double start = now();  // Starta mätningen (arrival)
+        double start = timer_now();         // Starta mätningen (arrival)
         sort(arr, n);
-        total += now() - start;
+        total += timer_now() - start;
+
+        // long delta = (stopp.tv_sec*MILJARD+stopp.tv_nsec) - (start.tv_sec*MILJARD+start.tv_nsec);
     }
     return total / ITERATIONS;
 }
