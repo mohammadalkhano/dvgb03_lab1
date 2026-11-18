@@ -3,11 +3,11 @@
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
-
 //
 // Private
 //
 typedef void (*sort_algorithm)(int *arr, int n);
+typedef bool (*search_algorithm)(const int *arr, int n, int v);
 // Returnerar sorterings algoritmen, eller NULL om a inte är en sortering.
 static sort_algorithm choose_algorithm(algorithm_t a)
 {
@@ -22,7 +22,18 @@ static sort_algorithm choose_algorithm(algorithm_t a)
 
     default:
         return NULL;
-        // TODO: sökalgoritmerna
+    }
+}
+static search_algorithm choose_search_algorithm(algorithm_t a)
+{
+    switch (a)
+    {
+    case linear_search_t:
+        return linear_search;
+    case binary_search_t:
+        return binary_search;
+    default:
+        return NULL;
     }
 }
 // Fyller arr med indata.
@@ -70,14 +81,28 @@ static double time_sort(sort_algorithm sort_algoritm, case_t c, int *arr, int n)
     return total / ITERATIONS;
 }
 
+static double time_search(search_algorithm search, case_t c, int *arr, int n)
+{
+    double total = 0.0;
+
+    for (int i = 0; i < ITERATIONS; i++)
+    {
+        generate_casebased_data(arr, n, c);
+        int target = generate_target(n, c);
+        double start = now();  // Starta mätningen (arrival)
+        search(arr, n, target);
+        total += now() - start;
+    }
+    return total / ITERATIONS;
+}
+
 //
 // Public
 //
 void benchmark(algorithm_t a, case_t c, result_t *result, int n)
 {
-    //
-    sort_algorithm sort = choose_algorithm(a);
-
+    sort_algorithm sort_algorithm = choose_algorithm(a);
+    search_algorithm search_algorithm = choose_search_algorithm(a);
     srand(time(NULL));
     for (int i = 0; i < n; i++)
     {
@@ -85,10 +110,16 @@ void benchmark(algorithm_t a, case_t c, result_t *result, int n)
         int *arr = malloc(size * sizeof(*arr));
 
         result[i].size = size;
-        if (arr != NULL && sort != NULL)
+        if (arr != NULL && sort_algorithm != NULL)
         {
-            result[i].time = time_sort(sort, c, arr, size);
+            result[i].time = time_sort(sort_algorithm, c, arr, size);
         }
+       //new
+        else if (arr != NULL && search_algorithm != NULL)
+        {
+            result[i].time = time_search(search_algorithm, c, arr, size);
+        }
+
         else
         {
             result[i].time = MEASURE_FAILED;
@@ -96,3 +127,9 @@ void benchmark(algorithm_t a, case_t c, result_t *result, int n)
         free(arr);
     }
 }
+
+
+
+
+
+
