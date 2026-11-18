@@ -1,5 +1,6 @@
 #include "analyze.h"
 #include "algorithm.h"
+#include <math.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -18,6 +19,7 @@ static sort_algorithm choose_algorithm(algorithm_t a)
         return insertion_sort;
     case quick_sort_t:
         return quick_sort;
+
     default:
         return NULL;
         // TODO: sökalgoritmerna
@@ -52,7 +54,7 @@ static double timer_now()
 }
 
 // Returnerar medeltiden i sekunder över ITERATIONS sorteringar.
-static double time_sort(sort_algorithm sort, case_t c, int *arr, int n)
+static double time_sort(sort_algorithm sort_algoritm, case_t c, int *arr, int n)
 {
     double total = 0.0;
 
@@ -60,7 +62,7 @@ static double time_sort(sort_algorithm sort, case_t c, int *arr, int n)
     {
         generate_casebased_data(arr, n, c); // ny indata varje gång, eftersom sorteringen ändrar arr
         double start = timer_now();         // Starta mätningen (arrival)
-        sort(arr, n);
+        sort_algoritm(arr, n);
         total += timer_now() - start;
 
         // long delta = (stopp.tv_sec*MILJARD+stopp.tv_nsec) - (start.tv_sec*MILJARD+start.tv_nsec);
@@ -79,7 +81,7 @@ void benchmark(algorithm_t a, case_t c, result_t *result, int n)
     srand(time(NULL));
     for (int i = 0; i < n; i++)
     {
-        int size = SIZE_START << i; // storleken dubblas för varje rad
+        int size = SIZE_START * (pow(2, i)); // storleken dubblas för varje rad (start * 2^i)
         int *arr = malloc(size * sizeof(*arr));
 
         result[i].size = size;
