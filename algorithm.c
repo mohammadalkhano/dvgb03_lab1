@@ -1,5 +1,4 @@
 #include "algorithm.h"
-
 //
 // Private
 //
@@ -49,20 +48,6 @@ void quick_sort(int *a, int n)
 {
     // TODO: quick sort
 
-        int i, j, x, y, z, pivot, temp;
-
-    if (n < 2)
-        return;                       /* 0 or 1 element: already sorted */
-
-     x = a[0];
-    y = a[n / 2];
-    z = a[n - 1];
-    if ((x <= y && y <= z) || (z <= y && y <= x))
-        pivot = y;
-    else if ((y <= x && x <= z) || (z <= x && x <= y))
-        pivot = x;
-    else
-        pivot = z;
 
 }
     
@@ -70,7 +55,16 @@ void quick_sort(int *a, int n)
 
 bool linear_search(const int *a, int n, int v)
 {
-    return false; // TODO: linear search
+    for (int i=0; i <= n; i++)
+    {
+        if (a[i] == v)
+        {
+            return true; // Found the value
+        }
+        
+
+    }
+    return false; 
 }
 
 bool binary_search(const int *a, int n, int v)

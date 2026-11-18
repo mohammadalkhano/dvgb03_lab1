@@ -1,11 +1,9 @@
 #include "ui.h"
 #include "analyze.h"
 #include "io.h"
-
 #include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
-
 
 
 //
@@ -60,13 +58,13 @@ static void ui_menu()
         "Quick sort worst case",
         "Quick sort average case",
 
-        "Linear sort best case",
-        "Linear sort worst case",
-        "Linear sort average case",
+        "Linear search best case",
+        "Linear search worst case",
+        "Linear search average case",
 
-        "Binary sort best case",
-        "Binary sort worst case",
-        "Binary sort average case",
+        "Binary search best case",
+        "Binary search worst case",
+        "Binary search average case",
     };
 
     ui_line('=', MENU_WIDTH);
@@ -157,6 +155,21 @@ void ui_run()
             break;
         case 'k':
             ui_benchmark(quick_sort_t, average_t, result);
+            break;
+        // linear search
+        case 'l':
+            ui_benchmark(linear_search_t, best_t, result);
+            break;
+        case 'm':
+            ui_benchmark(linear_search_t, worst_t, result);
+            break;
+        case 'n':
+            ui_benchmark(linear_search_t, average_t, result);
+            /*int n = 5;
+            int v = 3;
+            int a[] = {1, 2, 3, 4, 5};
+            int i = linear_search(a, n, v);
+            printf("info> found value %d at index %d\n", v, i);*/
             break;
         // Invalid input
         default:
