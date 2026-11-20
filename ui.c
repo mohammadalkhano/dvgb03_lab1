@@ -135,7 +135,7 @@ void ui_run()
         case 'e':
             ui_benchmark(bubble_sort_t, average_t, result);
             break;
-            // insertion sort
+            // Insertion sort
         case 'f':
             ui_benchmark(insertion_sort_t, best_t, result);
             break;
@@ -145,7 +145,7 @@ void ui_run()
         case 'h':
             ui_benchmark(insertion_sort_t, average_t, result);
             break;
-        // insertion sort
+        // Quick sort
         case 'i':
             ui_benchmark(quick_sort_t, best_t, result);
             break;
@@ -164,12 +164,17 @@ void ui_run()
             break;
         case 'n':
             ui_benchmark(linear_search_t, average_t, result);
-            /*int n = 5;
-            int v = 3;
-            int a[] = {1, 2, 3, 4, 5};
-            int i = linear_search(a, n, v);
-            printf("info> found value %d at index %d\n", v, i);*/
             break;
+        // Binary search
+        case 'o':
+            ui_benchmark(binary_search_t, best_t, result);
+            break;
+        case 'p':
+            ui_benchmark(binary_search_t, worst_t, result);
+            break;
+        case 'q':       
+            ui_benchmark(binary_search_t, average_t, result);
+            break;          
         // Invalid input
         default:
             show_menu = false;

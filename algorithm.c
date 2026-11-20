@@ -46,9 +46,33 @@ void insertion_sort(int *a, int n)
 
 void quick_sort(int *a, int n)
 {
-    // TODO: quick sort
+    if (n < 2)
+        return;
 
+    int pivot = a[n / 2];   // copy the pivot value, don't move it
+    int i = 0;
+    int j = n - 1;
 
+    while (i <= j)
+    {
+        while (a[i] < pivot)
+            i++;
+        while (a[j] > pivot)
+            j--;
+        if (i <= j)
+        {
+            int tmp = a[i];
+            a[i] = a[j];
+            a[j] = tmp;
+            i++;
+            j--;
+        }
+    }
+
+    // after the loop, j < i and the array is split into two parts:
+    // a[0..j] and a[i..n-1]
+    quick_sort(a, j + 1);
+    quick_sort(a + i, n - i);
 }
     
 
@@ -61,13 +85,31 @@ bool linear_search(const int *a, int n, int v)
         {
             return true; // Found the value
         }
-        
-
     }
     return false; 
 }
 
 bool binary_search(const int *a, int n, int v)
 {
+    int low =0;
+    int high = n - 1;
+    while (low <= high)
+    {
+        int mid = low + (high - low) / 2;
+        int value = a[mid];
+        if (value < v)
+        {
+            low = mid + 1;
+        }
+        else if (value > v)
+        {
+            high = mid - 1;
+        }
+        else
+        {
+            return true; // Found the value
+        }
+    }
+    
     return false; // TODO: binary search
 }

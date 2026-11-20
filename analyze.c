@@ -55,22 +55,38 @@ static void generate_casebased_data(int *arr, int n, case_t c)
         }
     }
 }
-static int generate_target(int n, case_t c)
+static int generate_target(int n, case_t c, algorithm_t algorithm)
 {
-    switch (c)
+    switch (algorithm)
     {
-    case best_t:
-        return 0;
-        break;
-    case worst_t:
-        return n - 1;
-        break;
-    case average_t:
-        return (int)((n / 2) + 1);
-        break;
+    case linear_search_t:
+        switch (c)
+        {
+        case best_t:
+            return 0;
+        case worst_t:
+            return n - 1;
+        case average_t:
+            return n / 2;
+        default:
+            return -2;
+        }
+
+    case binary_search_t:
+        switch (c)
+        {
+        case best_t:
+            return n / 2;
+        case worst_t:
+            return -1;
+        case average_t:
+            return n / 2;
+        default:
+            return -2;
+        }
+
     default:
         return -2;
-        break;
     }
 }
 
@@ -99,14 +115,14 @@ static double time_sort(sort_algorithm sort_algoritm, case_t c, int *arr, int n)
     return total / ITERATIONS;
 }
 
-static double time_search(search_algorithm search, case_t c, int *arr, int n)
+static double time_search(search_algorithm search,algorithm_t a, case_t c, int *arr, int n)
 {
     double total = 0.0;
 
     for (int i = 0; i < ITERATIONS; i++)
     {
         generate_casebased_data(arr, n, c);
-        int target = generate_target(n, c);
+        int target = generate_target(n, c, a);
         double start = timer_now(); // Starta mätningen (arrival)
         search(arr, n, target);
         total += timer_now() - start;
@@ -135,7 +151,7 @@ void benchmark(algorithm_t a, case_t c, result_t *result, int n)
         // new
         else if (arr != NULL && search_algorithm != NULL)
         {
-            result[i].time = time_search(search_algorithm, c, arr, size);
+            result[i].time = time_search(search_algorithm, a, c, arr, size);
         }
 
         else
