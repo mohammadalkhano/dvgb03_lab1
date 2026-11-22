@@ -36,23 +36,59 @@ static search_algorithm choose_search_algorithm(algorithm_t a)
         return NULL;
     }
 }
-// Fyller arr med indata.
-static void generate_casebased_data(int *arr, int n, case_t c)
+
+static void generate_quick_best(int *arr, int n, int first)
 {
+    if (n <= 0)
+    {
+        return;
+    }
+    int left = n / 2;         // antal värden mindre än pivoten
+    int right = n - 1 - left; // antal värden större än pivoten
+
+    generate_quick_best(arr, left, first);
+    generate_quick_best(arr + left + 1, right, first + left + 1);
+    arr[left] = arr[n - 1];
+    arr[n - 1] = first + left; // pivoten = medianen
+}
+
+// Fyller arr med indata.
+static void generate_casebased_data(int *arr, int n, algorithm_t a, case_t c)
+{
+    if (a == quick_sort_t && c == best_t)
+    {
+        generate_quick_best(arr, n, 0);
+        return;
+    }
     for (int i = 0; i < n; i++)
     {
         switch (c)
         {
         case best_t:
+            // sorterad
             arr[i] = i;
-            break; // sorterad
+            break;
         case worst_t:
-            arr[i] = n - i;
-            break; // omvänt sorterad
+            // omvänt sorterad
+            arr[i] = (a == quick_sort_t) ? i : n - i; // Quick = O(n^²) = Sorterad array
+            break;
         case average_t:
-            arr[i] = rand() % n;
-            break; // slumpmässig
+            arr[i] = rand() % n; // slumpmässigt
+            break;
         }
+    }
+}
+static int generate_search_target(algorithm_t a, case_t c, int n)
+{
+    switch (c)
+    {
+    case best_t:
+        return a == linear_search_t ? 0 : 2 * ((n - 1) / 2);
+    case average_t:
+        return 2 * (rand() % n);
+    case worst_t:
+    default:
+        return 2 * (rand() % n) + 1;
     }
 }
 
@@ -64,15 +100,17 @@ static double timer_now()
     return (double)(time_space.tv_sec + time_space.tv_nsec / MILJARD);
 }
 
-// Returnerar medeltiden i sekunder över ITERATIONS sorteringar.
-static double time_sort(sort_algorithm sort_algoritm, case_t c, int *arr, int n)
+// Returnerar medeltiden i sekunder över ITERATIONS sorteringar av en sortering algorithm.
+static double time_sort(sort_algorithm sort_algoritm, algorithm_t a, case_t c, int *arr, int n)
 {
     double total = 0.0;
+    double start = 0.0;
 
     for (int i = 0; i < ITERATIONS; i++)
     {
-        generate_casebased_data(arr, n, c); // ny indata varje gång, eftersom sorteringen ändrar arr
-        double start = timer_now();         // Starta mätningen (arrival)
+        // ny indata varje gång eftersom sorteringen ändrar arrayen
+        generate_casebased_data(arr, n, a, c);
+        start = timer_now(); // Starta mätningen (process arrival)
         sort_algoritm(arr, n);
         total += timer_now() - start;
 
@@ -80,20 +118,33 @@ static double time_sort(sort_algorithm sort_algoritm, case_t c, int *arr, int n)
     }
     return total / ITERATIONS;
 }
-
-static double time_search(search_algorithm search, case_t c, int *arr, int n)
+// Returnerar medeltiden i sekunder över ITERATIONS sökningar av en sökning algorithm.
+static double time_search(search_algorithm search_algorithm, algorithm_t a, case_t c,
+                          const int *arr, int n)
 {
+    int *targets = malloc(SEARCH_REPEATS * sizeof(*targets));
     double total = 0.0;
 
+    if (targets == NULL)
+    {
+        return MEASURE_FAILED;
+    }
     for (int i = 0; i < ITERATIONS; i++)
     {
-        generate_casebased_data(arr, n, c);
-        int target = generate_target(n, c);
-        double start = now();  // Starta mätningen (arrival)
-        search(arr, n, target);
-        total += now() - start;
+        for (int k = 0; k < SEARCH_REPEATS; k++)
+        {
+            targets[k] = generate_search_target(a, c, n);
+        }
+        double start = timer_now();
+        for (int k = 0; k < SEARCH_REPEATS; k++)
+        {
+            search_algorithm(arr, n, targets[k]);
+        }
+        total += timer_now() - start;
     }
-    return total / ITERATIONS;
+    free(targets);
+    return total / ((double)ITERATIONS * SEARCH_REPEATS); // SEARCH_REPEATS sökningar mäts
+    // åt gången, ITERATIONS gånger. Sökvärdena tas fram före tidtagningen.
 }
 
 //
@@ -112,24 +163,15 @@ void benchmark(algorithm_t a, case_t c, result_t *result, int n)
         result[i].size = size;
         if (arr != NULL && sort_algorithm != NULL)
         {
-            result[i].time = time_sort(sort_algorithm, c, arr, size);
+            result[i].time = time_sort(sort_algorithm, a, c, arr, size);
         }
-       //new
+        // new
         else if (arr != NULL && search_algorithm != NULL)
         {
-            result[i].time = time_search(search_algorithm, c, arr, size);
+            result[i].time = time_search(search_algorithm, a, c, arr, size);
         }
-
         else
-        {
             result[i].time = MEASURE_FAILED;
-        }
         free(arr);
     }
 }
-
-
-
-
-
-
