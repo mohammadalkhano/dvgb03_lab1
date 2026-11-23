@@ -4,6 +4,8 @@
 #define SIZE_START 512
 #define ITERATIONS 4
 #define MILJARD 1000000000.0
+#define SEARCH_REPEATS 10000 // sökningar per tidtagning, en sökning är för snabb att mäta ensam
+
 #define MEASURE_FAILED (-1.0) // om mätningen inte kunde
 // #define CLOCK_MONOTONIC
 

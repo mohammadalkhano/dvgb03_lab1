@@ -88,14 +88,16 @@ void print_result(const result_t *result, int n)
             printf("%d %s\n", result[i].size, "failed");
             continue;
         }
-        printf("%d \t %.9f %12.3e %12.3e %12.3e %12.3e\n", result[i].size, t, t / log2(size),
+        printf("%d \t %12.3e %12.3e %12.3e %12.3e %12.3e\n", result[i].size, t, t / log2(size),
                t / size, t / (size * log2(size)), t / (size * size));
     }
     ui_line('=', MENU_WIDTH);
 }
 
-static void ui_benchmark(algorithm_t a, case_t c, result_t *result)
+static void ui_benchmark(algorithm_t a, case_t c)
 {
+
+    result_t result[RESULT_ROWS];
     benchmark(a, c, result, RESULT_ROWS);
     print_result(result, RESULT_ROWS);
 }
@@ -105,7 +107,6 @@ static void ui_benchmark(algorithm_t a, case_t c, result_t *result)
 void ui_run()
 {
     bool running, show_menu;
-    result_t result[RESULT_ROWS];
 
     show_menu = true;
     running = true;
@@ -127,48 +128,58 @@ void ui_run()
             break;
         // Bubble sort
         case 'c':
-            ui_benchmark(bubble_sort_t, best_t, result);
+            ui_benchmark(bubble_sort_t, best_t);
             break;
         case 'd':
-            ui_benchmark(bubble_sort_t, worst_t, result);
+            ui_benchmark(bubble_sort_t, worst_t);
             break;
         case 'e':
-            ui_benchmark(bubble_sort_t, average_t, result);
+            ui_benchmark(bubble_sort_t, average_t);
             break;
             // insertion sort
         case 'f':
-            ui_benchmark(insertion_sort_t, best_t, result);
+            ui_benchmark(insertion_sort_t, best_t);
             break;
         case 'g':
-            ui_benchmark(insertion_sort_t, worst_t, result);
+            ui_benchmark(insertion_sort_t, worst_t);
             break;
         case 'h':
-            ui_benchmark(insertion_sort_t, average_t, result);
+            ui_benchmark(insertion_sort_t, average_t);
             break;
         // insertion sort
         case 'i':
-            ui_benchmark(quick_sort_t, best_t, result);
+            ui_benchmark(quick_sort_t, best_t);
             break;
         case 'j':
-            ui_benchmark(quick_sort_t, worst_t, result);
+            ui_benchmark(quick_sort_t, worst_t);
             break;
         case 'k':
-            ui_benchmark(quick_sort_t, average_t, result);
+            ui_benchmark(quick_sort_t, average_t);
             break;
         // linear search
         case 'l':
-            ui_benchmark(linear_search_t, best_t, result);
+            ui_benchmark(linear_search_t, best_t);
             break;
         case 'm':
-            ui_benchmark(linear_search_t, worst_t, result);
+            ui_benchmark(linear_search_t, worst_t);
             break;
         case 'n':
-            ui_benchmark(linear_search_t, average_t, result);
+            ui_benchmark(linear_search_t, average_t);
             /*int n = 5;
             int v = 3;
             int a[] = {1, 2, 3, 4, 5};
             int i = linear_search(a, n, v);
             printf("info> found value %d at index %d\n", v, i);*/
+            break;
+        // Binary search
+        case 'o':
+            ui_benchmark(binary_search_t, best_t);
+            break;
+        case 'p':
+            ui_benchmark(binary_search_t, worst_t);
+            break;
+        case 'q':
+            ui_benchmark(binary_search_t, average_t);
             break;
         // Invalid input
         default:
