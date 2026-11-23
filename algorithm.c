@@ -14,7 +14,7 @@ static void swap(int *x, int *y)
 
 void bubble_sort(int *a, int n)
 {
-    int i, j, tmp;
+    int i, j;
     // TODO: Refactoring --> swap func??
     for (i = 0; i < n - 1; i++)
     {
@@ -22,9 +22,7 @@ void bubble_sort(int *a, int n)
         {
             if (a[j] > a[j + 1])
             {
-                tmp = a[j];
-                a[j] = a[j + 1];
-                a[j + 1] = tmp;
+                swap(&a[j], &a[j + 1]);
             }
         }
     }
@@ -106,7 +104,7 @@ bool binary_search(const int *a, int n, int v)
         {
             return true;
         }
-        if (a[mid] < v)
+        else if (a[mid] < v)
         {
             low = mid + 1;
         }
@@ -115,5 +113,5 @@ bool binary_search(const int *a, int n, int v)
             high = mid - 1;
         }
     }
-    return false; // TODO: binary search
+    return false; // not found aka out of bounds
 }
