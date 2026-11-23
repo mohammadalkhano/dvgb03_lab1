@@ -76,8 +76,14 @@ static void ui_menu()
 void print_result(const result_t *result, int n)
 {
     ui_line('=', MENU_WIDTH);
-    printf("size \ttime T(s)\tT/log n\tT/n\tT/n log n \tT/n^2\n");
-    ui_line('-', MENU_WIDTH);
+    printf("%-11s %-13s %-13s %-10s %-14s %-11s\n",
+        "size",
+        "time T(s)",
+        "T/log n",
+        "T/n",
+        "T/n log n",
+        "T/n^2");    ui_line('-', MENU_WIDTH);
+
     for (int i = 0; i < n; i++)
     {
         double size = result[i].size;

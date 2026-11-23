@@ -15,7 +15,7 @@ static void swap(int *x, int *y)
 void bubble_sort(int *a, int n)
 {
     int i, j;
-    // TODO: Refactoring --> swap func??
+    // TODO: Refactoring --> Done :)
     for (i = 0; i < n - 1; i++)
     {
         for (j = 0; j < n - 1 - i; j++)
