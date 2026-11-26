@@ -24,6 +24,7 @@ static sort_algorithm choose_algorithm(algorithm_t a)
         return NULL;
     }
 }
+// Returnerar sökning algoritmen eller NULL.
 static search_algorithm choose_search_algorithm(algorithm_t a)
 {
     switch (a)
@@ -45,14 +46,14 @@ static void generate_quick_best(int *arr, int n, int first)
     }
     int left = n / 2;         // antal värden mindre än pivoten
     int right = n - 1 - left; // antal värden större än pivoten
-
+    //e.x  {0 1 4 3 2 8 6 7 9 5}
     generate_quick_best(arr, left, first);
     generate_quick_best(arr + left + 1, right, first + left + 1);
     arr[left] = arr[n - 1];
     arr[n - 1] = first + left; // pivoten = medianen
 }
 
-// Fyller arr med indata.
+// Fyller arr med indata baserad på algo case.
 static void generate_casebased_data(int *arr, int n, algorithm_t a, case_t c)
 {
     if (a == quick_sort_t && c == best_t)
@@ -64,16 +65,14 @@ static void generate_casebased_data(int *arr, int n, algorithm_t a, case_t c)
     {
         switch (c)
         {
-        case best_t:
-            // sorterad
+        case best_t: // sorterad
             arr[i] = i;
             break;
-        case worst_t:
-            // omvänt sorterad
+        case worst_t:                                 // omvänt sorterad
             arr[i] = (a == quick_sort_t) ? i : n - i; // Quick = O(n^²) = Sorterad array
             break;
-        case average_t:
-            arr[i] = rand() % n; // slumpmässigt
+        case average_t: // slumpmässigt
+            arr[i] = rand() % n;
             break;
         }
     }
@@ -89,6 +88,15 @@ static int generate_search_target(algorithm_t a, case_t c, int n)
     case worst_t:
     default:
         return 2 * (rand() % n) + 1;
+    }
+}
+// Fyller arr med de jämna talen 0, 2, ..., 2(n-1), alltså sorterad indata som
+// sökning kräver. Udda tal finns då garanterat inte i arrayen.
+static void generate_search_data(int *arr, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        arr[i] = 2 * i;
     }
 }
 
@@ -165,9 +173,9 @@ void benchmark(algorithm_t a, case_t c, result_t *result, int n)
         {
             result[i].time = time_sort(sort_algorithm, a, c, arr, size);
         }
-        // new
         else if (arr != NULL && search_algorithm != NULL)
         {
+            generate_search_data(arr, size);
             result[i].time = time_search(search_algorithm, a, c, arr, size);
         }
         else
