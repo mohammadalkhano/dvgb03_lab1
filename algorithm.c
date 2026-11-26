@@ -83,7 +83,7 @@ void quick_sort(int *a, int n)
 
 bool linear_search(const int *a, int n, int v)
 {
-    for (int i = 0; i <= n; i++)
+    for (int i = 0; i < n; i++)
     {
         if (a[i] == v)
         {
