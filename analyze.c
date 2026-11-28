@@ -46,7 +46,7 @@ static void generate_quick_best(int *arr, int n, int first)
     }
     int left = n / 2;         // antal värden mindre än pivoten
     int right = n - 1 - left; // antal värden större än pivoten
-    //e.x  {0 1 4 3 2 8 6 7 9 5}
+    // e.x  {0 1 4 3 2 8 6 7 9 5}
     generate_quick_best(arr, left, first);
     generate_quick_best(arr + left + 1, right, first + left + 1);
     arr[left] = arr[n - 1];
@@ -86,8 +86,9 @@ static int generate_search_target(algorithm_t a, case_t c, int n)
     case average_t:
         return 2 * (rand() % n);
     case worst_t:
-    default:
         return 2 * (rand() % n) + 1;
+    default:
+        return -1; // Ogiltig fall
     }
 }
 // Fyller arr med de jämna talen 0, 2, ..., 2(n-1), alltså sorterad indata som
